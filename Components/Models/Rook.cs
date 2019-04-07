@@ -16,6 +16,10 @@ namespace Chess.Models
         {
             bool result = false;
 
+            /* Getting how many cells the piece is moved horizontally and vertically */
+            int absX = GetMoveAbsValue(end, 'X');
+            int absY = GetMoveAbsValue(end, 'Y');
+
             // If is a vertical move
             if (start.X == end.X)
             {
@@ -23,7 +27,7 @@ namespace Chess.Models
 
                 /* Verifying that in the route, whether you move
                 upwards or downwards, all the cells are empty. */
-                for (int i = 1; ((i < GetMoveAbsValue(end, 'Y')) && (result)); i++)
+                for (int i = 1; ((i < absY) && (result)); i++)
                 {
                     if (start.Y < end.Y)
                     {
@@ -42,7 +46,7 @@ namespace Chess.Models
 
                 /* Verifying that in the route, whether you move
                 left or right, all the cells are empty. */
-                for (int i = 1; ((i < GetMoveAbsValue(end, 'X')) && (result)); i++)
+                for (int i = 1; ((i < absX) && (result)); i++)
                 {
                     if (start.X < end.X)
                     {
@@ -54,7 +58,7 @@ namespace Chess.Models
                     }
                 }
             }
-            
+            /* Checking that there isn't already a piece of mine in the place where I want to move. */
             return result ? IsPositionFreeOfAllies(end) : result;
         }
     }

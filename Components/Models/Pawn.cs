@@ -46,6 +46,8 @@ namespace Chess.Models
 
                     // If i'm not moving back
                     if (result) {
+                        /* Checking that there isn't already a piece
+                        of mine in the place where I want to move. */
                         result = matrix[end.X, end.Y] == null ? IsPositionFreeOfAllies(end) : false;
                     }
                 }

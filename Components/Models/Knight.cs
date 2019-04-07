@@ -19,7 +19,8 @@ namespace Chess.Models
             int absY = GetMoveAbsValue(end, 'Y');
             
             /* Check that the piece performs two horizontal/vertical steps followed by a
-            vertical/horizontal step, so that the path traveled ideally forms an "L". */
+            vertical/horizontal step, so that the path traveled ideally forms an "L"
+            and there isn't already a piece of mine in the place where I want to move. */
             return ((absX == 2) && (absY == 1)
                     || (absX == 1) && (absY == 2)) ? 
                 IsPositionFreeOfAllies(end) : false;

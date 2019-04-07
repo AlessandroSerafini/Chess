@@ -14,7 +14,8 @@ namespace Chess.Models
         belonging to the King piece. */
         public override bool CheckMove(Position end)
         {
-            /* Check that you are moving only one cell. */
+            /* Check that you are moving only one cell and there isn't already
+            a piece of mine in the place where I want to move. */
             return ((GetMoveAbsValue(end, 'X') <= 1) && (GetMoveAbsValue(end, 'Y') <= 1)) ?
                 IsPositionFreeOfAllies(end) : false;
         }
