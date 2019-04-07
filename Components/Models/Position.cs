@@ -6,12 +6,15 @@ namespace Chess.Models
     {
         private int x, y;
 
+        /* Definition of Position class, which is composed by the "x" and "y"
+        properties which represents the piece's column and row respectively. */
         public Position(int x, int y)
         {
             this.x = x;
             this.y = y;
         }
 
+        /* This method takes care of get/set the "x" position. */
         public int X
         {
             get
@@ -20,12 +23,13 @@ namespace Chess.Models
             }
             set
             {
-                //Il valore di ogni coordinata deve essere compreso fra 0 e 7
+                // The "x" value must be included between 0 and 7
                 if ((value >= 0) && (value < 8))
                     x = value;
             }
         }
 
+        /* This method takes care of get/set the "y" position. */
         public int Y
         {
             get
@@ -34,7 +38,7 @@ namespace Chess.Models
             }
             set
             {
-                //Il valore di ogni coordinata deve essere compreso fra 0 e 7
+                // Also the "y" value must be included between 0 and 7
                 if ((value >= 0) && (value < 8))
                     y = value;
             }
