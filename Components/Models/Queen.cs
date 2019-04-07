@@ -9,17 +9,24 @@ namespace Chess.Models
             identifier = 'Q';
         }
 
+        /* This method overrides the relative method defined in the parent class
+        by applying specific rules on the possibility of doing certain kinds of moves
+        belonging to the Queen piece. */
         public override bool CheckMove(Position end)
         {
             bool result = false;
-
+            
+            /* Getting how many cells the piece is moved horizontally and vertically */
             int absX = GetMoveAbsValue(end, 'X');
             int absY = GetMoveAbsValue(end, 'Y');
 
-            if (start.X == end.X) // vertical move
+            // If is a vertical move
+            if (start.X == end.X)
             {
                 result = true;
 
+                /* Verifying that in the route, whether you move
+                upwards or downwards, all the cells are empty. */
                 for (int i = 1; ((i < absY) && (result)); i++)
                 {
                     if (start.Y < end.Y)
@@ -32,10 +39,13 @@ namespace Chess.Models
                     }
                 }
             }
-            else if (start.Y == end.Y) // horizontal move
+            // If is an horizontal move
+            else if (start.Y == end.Y)
             {
                 result = true;
 
+                /* Verifying that in the route, whether you move
+                left or right, all the cells are empty. */
                 for (int i = 1; ((i < absX) && (result)); i++)
                 {
                     if (start.X < end.X)
@@ -48,11 +58,12 @@ namespace Chess.Models
                     }
                 }
             }
-            else if (absX == absY) // diagonal move
+            // If is a diagonal move
+            else if (absX == absY)
             {
                 result = true;
 
-                // check if all empty cells on the way
+                // I can go on as long as there are empty cells in my way
                 for (int i = 1; ((i < absX) && (result)); i++)
                 {
                     if (start.X < end.X)
@@ -69,7 +80,8 @@ namespace Chess.Models
                     }
                 }
             }
-
+            
+            /* Checking that there isn't already a piece of mine in the place where I want to move. */
             return result ? IsPositionFreeOfAllies(end) : result;
         }
     }
