@@ -17,13 +17,22 @@ namespace Chess.Components
             matrix = new Piece[8, 8];
         }
 
+        public void Init()
+        {
+            // Initialization of the chessboard loading pieces for both teams.
+            LoadPieces();
+            // Draw the playing field.
+            Draw();
+        }
+
         /* Initialization of the chessboard: this method takes care of drawing all the pieces for
         both teams on chessboard in order to obtain a vail game field. */
-        public void Init()
+        private void LoadPieces()
         {
             whitePieces = LoadPieces(true);
             blackPieces = LoadPieces(false);
         }
+        
 
         /* Adds the pieces to the chessboard by placing a specific piece based on cell.
         This method accepts the color type (default is the same color as white). */
@@ -96,7 +105,7 @@ namespace Chess.Components
 
         /* Draw the playing field highlighting the boxes with the characteristic
         "checkerboard" colors till complete a matrix of 8 columns and 8 rows. */
-        public void Draw()
+        private void Draw()
         {
             Console.Clear();
             for (int j = 7; j >= 0; j--)
@@ -135,7 +144,7 @@ namespace Chess.Components
         the user is about to perform by accepting the coordinates as input.
         Coordinates will be validated and in case of error,
         a message will be printed on screen. */
-        public bool ReadMove(bool isWhite)
+        public bool GetMoveCoordinates(bool isWhite)
         {
             bool result = false;
             try
@@ -148,7 +157,7 @@ namespace Chess.Components
                 int startX = int.Parse(coordinates[0]) - 1;
                 int startY = int.Parse(coordinates[1]) - 1;
 
-                Helper.AskMove(isWhite);
+                UserMessage.WhatPieceYouWantMove(isWhite);
                 
                 /* Interpreting the final coordinates in the (X,Y) format
                 and separating the values into two variables. */
@@ -169,23 +178,23 @@ namespace Chess.Components
                     respective kings are in check position. */
                     if (isWhiteKingOnCheck)
                     {
-                        Helper.Info("White King is on check", ConsoleColor.Green);
+                        UserMessage.Info("White King is on check", ConsoleColor.Green);
                     }
 
                     if (isBlackKingOnCheck)
                     {
-                        Helper.Info("Black King is on check", ConsoleColor.Green);
+                        UserMessage.Info("Black King is on check", ConsoleColor.Green);
                     }
                 }
 
             }
             catch (System.FormatException)
             {
-                Helper.Error("Wrong input format, input must be: X,Y");
+                UserMessage.Error("Wrong input format, input must be: X,Y");
             }
             catch (System.IndexOutOfRangeException)
             {
-                Helper.Error("Wrong input format, input must be: X,Y");
+                UserMessage.Error("Wrong input format, input must be: X,Y");
             }
 
             return result;
@@ -275,20 +284,20 @@ namespace Chess.Components
                                     }
                                 }
                             } else {
-                                Helper.Error("Invalid move!");
+                                UserMessage.Error("Invalid move!");
                             }
 
                         } else {
-                            Helper.Error("Start position and end position must be different!");
+                            UserMessage.Error("Start position and end position must be different!");
                         }
                     } else {
-                        Helper.Error("You can't move your opponent's piece!");
+                        UserMessage.Error("You can't move your opponent's piece!");
                     }
                 } else {
-                    Helper.Error("Selected position is empty!");
+                    UserMessage.Error("Selected position is empty!");
                 }
             } else {
-                Helper.Error("Selected position does not exists!");
+                UserMessage.Error("Selected position does not exists!");
             }
                            
             return result;
@@ -321,8 +330,15 @@ namespace Chess.Components
             return result;
         }
 
+        public bool CanIDoAnotherTurn {
+            get
+            {
+                return CheckMateBlack && CheckMateWhite;
+            }
+        }
+
         // This method checks whether checkmate has been done against the white king.
-        public bool CheckMateWhite
+        private bool CheckMateWhite
         {
             get
             {
