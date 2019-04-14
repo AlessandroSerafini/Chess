@@ -4,11 +4,10 @@ namespace Chess.Models
 {
     abstract public class Piece
     {
-        protected char identifier; // Piece identifier
-        protected bool isWhite;// true for white piece, false for black piece
-
-        protected Position start; // Piece start position
         protected Piece[,] matrix;  // Matrix reference
+        protected char identifier; // Piece identifier
+        protected Position start; // Piece start position
+        protected bool isWhite;// true for white piece, false for black piece
         
         /* Definition of Piece class, which is composed by the
         "matrix", "start" and "isWhite" properties. */
