@@ -10,6 +10,8 @@ namespace Chess.Components
         private Position whiteKing, blackKing;
         private List<Piece> whitePieces, blackPieces;
 
+        private bool lastMoveColor = false;
+
         private bool isWhiteKingOnCheck = false, isBlackKingOnCheck = false;
         private bool isWhiteKingMatechecked = false, isBlackKingMatechecked = false;
 
@@ -119,9 +121,9 @@ namespace Chess.Components
                     Console.ResetColor();
                 }
             }
-            Console.Write("\n\n    ");
+            Console.Write("\n\n   ");
             for (int k = 0; k < 8; k++) {
-                Console.Write(" " + (k + 1) + " ");
+                Console.Write("  " + (k + 1) + " ");
             }
             Console.Write("\n\n");
         }
@@ -130,7 +132,7 @@ namespace Chess.Components
         public void DrawPiece(int i, int j)
         {
             char pieceToDraw = piece[i, j] != null ? piece[i, j].Identifier : ' ';
-            Console.Write(" " + pieceToDraw + " ");
+            Console.Write(" " + pieceToDraw + "  ");
         }
 
         /* This method returns the color of the piece in the given position
@@ -235,7 +237,9 @@ namespace Chess.Components
                             if (pieceToMove.CheckMove(end))
                             {
                                 result = true;
+                                lastMoveColor=pieceToMove.IsWhite;
                                 
+                                // If you're moving one of two kings, update its position.
                                 if (pieceToMove.Start == whiteKing) {
                                     whiteKing = end;
                                 }
@@ -244,14 +248,13 @@ namespace Chess.Components
                                     blackKing = end;
                                 }
 
+                                // "Eat" the enemy piece.
                                 if (piece[endX, endY] != null) {
-                                    // "Eat" the enemy piece.
                                     if (piece[endX, endY].IsWhite) {
                                         whitePieces.Remove(piece[endX, endY]);
                                     } else {
                                         blackPieces.Remove(piece[endX, endY]);
                                     }
-                                        
                                 }
                                     
                                 // Move the piece, updating its position.
@@ -333,7 +336,16 @@ namespace Chess.Components
         public bool CanIDoAnotherTurn {
             get
             {
-                return CheckMateBlack && CheckMateWhite;
+                return !CheckMateBlack && !CheckMateWhite;
+            }
+        }
+
+        // This method checks last move color (true for white, false for black).
+        public bool CheckLastMoveColor
+        {
+            get
+            {
+                return lastMoveColor;
             }
         }
 

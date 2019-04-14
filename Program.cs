@@ -14,18 +14,21 @@ namespace Chess
             chessboard.Init();
 
             /* Verify that game is still valid, making sure that none of the two teams has made checkmates against the opponent. */
-            while (!chessboard.CanIDoAnotherTurn)
+            while (chessboard.CanIDoAnotherTurn)
             {
-                // Asking the user to make his move by entering valid coordinates.
-                do
-                {
-                    UserMessage.WhereYouWantMovePiece(true);
-                } while (!chessboard.GetMoveCoordinates(true));
-
-                do
-                {
-                    UserMessage.WhereYouWantMovePiece(false);
-                } while (!chessboard.GetMoveCoordinates(false));
+                if(!chessboard.CheckLastMoveColor) {
+                    // Asking the user to make his move by entering valid coordinates.
+                    do
+                    {
+                        UserMessage.WhereYouWantMovePiece(true);
+                    } while (!chessboard.GetMoveCoordinates(true));
+                }
+                else {
+                    do
+                    {
+                        UserMessage.WhereYouWantMovePiece(false);
+                    } while (!chessboard.GetMoveCoordinates(false));
+                }
 
             }
 
