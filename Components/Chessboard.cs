@@ -6,7 +6,7 @@ namespace Chess.Components
 {
     public class Chessboard
     {
-        private Piece[,] matrix;
+        private Piece[,] piece;
         private Position whiteKing, blackKing;
         private List<Piece> whitePieces, blackPieces;
 
@@ -14,7 +14,7 @@ namespace Chess.Components
         private bool isWhiteKingMatechecked = false, isBlackKingMatechecked = false;
 
         public Chessboard() {
-            matrix = new Piece[8, 8];
+            piece = new Piece[8, 8];
         }
 
         public void Init()
@@ -54,48 +54,48 @@ namespace Chess.Components
                             case 0:
                             case 7:
                                 {
-                                    matrix[i, j] = new Rook(isWhite, i, j, matrix);
+                                    piece[i, j] = new Rook(isWhite, i, j, piece);
                                 }
                                 break;
                             case 1:
                             case 6:
                                 {
-                                    matrix[i, j] = new Knight(isWhite, i, j, matrix);
+                                    piece[i, j] = new Knight(isWhite, i, j, piece);
                                 }
                                 break;
                             case 2:
                             case 5:
                                 {
-                                    matrix[i, j] = new Bishop(isWhite, i, j, matrix);
+                                    piece[i, j] = new Bishop(isWhite, i, j, piece);
                                 }
                                 break;
                             case 3:
                                 {
-                                    matrix[i, j] = new Queen(isWhite, i, j, matrix);
+                                    piece[i, j] = new Queen(isWhite, i, j, piece);
                                 }
                                 break;
                             case 4:
                                 {
-                                    matrix[i, j] = new King(isWhite, i, j, matrix);
+                                    piece[i, j] = new King(isWhite, i, j, piece);
 
                                     if (isWhite)
                                     {
-                                        whiteKing = matrix[i, j].Start;
+                                        whiteKing = piece[i, j].Start;
                                     }
                                     else
                                     {
-                                        blackKing = matrix[i, j].Start;
+                                        blackKing = piece[i, j].Start;
                                     }
 
                                 }
                                 break;
                         }
-                        pieces.Add(matrix[i, j]);
+                        pieces.Add(piece[i, j]);
                     }
                     else
                     {
-                        matrix[i, j] = new Pawn(isWhite, i, j, matrix);
-                        pieces.Add(matrix[i, j]);
+                        piece[i, j] = new Pawn(isWhite, i, j, piece);
+                        pieces.Add(piece[i, j]);
                     }
                 }
             }
@@ -129,15 +129,15 @@ namespace Chess.Components
         // This method simply takes care of drawing the piece.
         public void DrawPiece(int i, int j)
         {
-            char piece = matrix[i, j] != null ? matrix[i, j].Identifier : ' ';
-            Console.Write(" " + piece + " ");
+            char pieceToDraw = piece[i, j] != null ? piece[i, j].Identifier : ' ';
+            Console.Write(" " + pieceToDraw + " ");
         }
 
         /* This method returns the color of the piece in the given position
         (true for white piece, false for black piece). */
         public bool IsWhiteColor(int i, int j)
         {
-            return matrix[i, j] != null ? matrix[i, j].IsWhite : false;
+            return piece[i, j] != null ? piece[i, j].IsWhite : false;
         }
 
         /* This method takes care of reading the position of the move that
@@ -201,7 +201,7 @@ namespace Chess.Components
         }
 
         // This method takes care of checking if the move is regularly inside the chessboard.
-        private bool IsInBounds(int startX, int startY, int endX, int endY)
+        private bool IsInsideChessboard(int startX, int startY, int endX, int endY)
         {
             return (startX >= 0 && startX < 8) && (startY >= 0 && startY < 8) &&
                 (endX >= 0 && endX < 8) && (endY >= 0 && endY < 8);
@@ -217,55 +217,55 @@ namespace Chess.Components
             isWhiteKingOnCheck = isBlackKingOnCheck = false;
 
             // Check if move is inside the chessboard.
-            if (IsInBounds(startX, startY, endX, endY)) {
+            if (IsInsideChessboard(startX, startY, endX, endY)) {
 
-                Piece piece = matrix[startX, startY];
+                Piece pieceToMove = piece[startX, startY];
                 Position end = new Position(endX, endY);
 
                 //Check if start cell is not empty.
-                if (piece != null) {
+                if (pieceToMove != null) {
 
                     //Check if player is moving his own piece.
-                    if (piece.IsWhite == isWhite) {
+                    if (pieceToMove.IsWhite == isWhite) {
 
                         //Check if initial and final position are different.
                         if ((startX != endX) || (startY != endY)) {
 
                             // Check if this piece can do this move.
-                            if (piece.CheckMove(end))
+                            if (pieceToMove.CheckMove(end))
                             {
                                 result = true;
                                 
-                                if (piece.Start == whiteKing) {
+                                if (pieceToMove.Start == whiteKing) {
                                     whiteKing = end;
                                 }
-                                if (piece.Start == blackKing)
+                                if (pieceToMove.Start == blackKing)
                                 {
                                     blackKing = end;
                                 }
 
-                                if (matrix[endX, endY] != null) {
+                                if (piece[endX, endY] != null) {
                                     // "Eat" the enemy piece.
-                                    if (matrix[endX, endY].IsWhite) {
-                                        whitePieces.Remove(matrix[endX, endY]);
+                                    if (piece[endX, endY].IsWhite) {
+                                        whitePieces.Remove(piece[endX, endY]);
                                     } else {
-                                        blackPieces.Remove(matrix[endX, endY]);
+                                        blackPieces.Remove(piece[endX, endY]);
                                     }
                                         
                                 }
                                     
                                 // Move the piece, updating its position.
-                                piece.Start = end;
-                                matrix[endX, endY] = piece;
+                                pieceToMove.Start = end;
+                                piece[endX, endY] = pieceToMove;
 
                                 // Clean piece's old cell.
-                                matrix[startX, startY] = null;
-                                piece = null;
+                                piece[startX, startY] = null;
+                                pieceToMove = null;
 
                                 // Check if checkmate was done at the end of the move.
-                                if (IsCheckMate(matrix[endX, endY].IsWhite))
+                                if (IsCheckMate(piece[endX, endY].IsWhite))
                                 {
-                                    if (matrix[endX, endY].IsWhite)
+                                    if (piece[endX, endY].IsWhite)
                                     {
                                         isWhiteKingMatechecked = true;
                                     }
@@ -277,10 +277,10 @@ namespace Chess.Components
                                 else
                                 {
                                     // If checkmate wasn't done, verify if check was done.
-                                    if (matrix[endX, endY].IsWhite) {
-                                        isBlackKingOnCheck = IsCheckMate(!matrix[endX, endY].IsWhite);
+                                    if (piece[endX, endY].IsWhite) {
+                                        isBlackKingOnCheck = IsCheckMate(!piece[endX, endY].IsWhite);
                                     } else {
-                                        isWhiteKingOnCheck = IsCheckMate(!matrix[endX, endY].IsWhite);
+                                        isWhiteKingOnCheck = IsCheckMate(!piece[endX, endY].IsWhite);
                                     }
                                 }
                             } else {
