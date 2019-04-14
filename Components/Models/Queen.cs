@@ -6,7 +6,7 @@ namespace Chess.Models
     {
         public Queen(bool isWhite, int x, int y, Piece[,] matrix) : base(isWhite, x, y, matrix)
         {
-            identifier = 'Q';
+            identifier = '♕';
         }
 
         /* This method overrides the relative method defined in the parent class
