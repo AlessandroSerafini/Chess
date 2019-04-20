@@ -20,12 +20,12 @@ namespace Chess.Models
 
         /* This method takes care of verify that user can
         do a specific move with a specific piece. */
-        public abstract bool CheckMove(Position end);
+        public abstract bool CheckMove(Position targetPosition);
 
         /* This method takes care of calculating how many cells the piece is moved. */
-        public int GetMoveAbsValue(Position end, char axis)
+        public int GetMoveAbsValue(Position targetPosition, char axis)
         {
-            return axis == 'X' ? Math.Abs(position.X - end.X) : Math.Abs(position.Y - end.Y);
+            return axis == 'X' ? Math.Abs(position.X - targetPosition.X) : Math.Abs(position.Y - targetPosition.Y);
         }
 
         /* This method takes care of check if the specified position is free from my pieces.  */

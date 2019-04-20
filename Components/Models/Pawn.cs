@@ -17,38 +17,38 @@ namespace Chess.Models
         /* This method overrides the relative method defined in the parent class
         by applying specific rules on the possibility of doing certain kinds of moves
         belonging to the Pawn piece. */
-        public override bool CheckMove(Position end)
+        public override bool CheckMove(Position targetPosition)
         {
             bool result = false;
             
             /* Getting how many cells the piece is moved horizontally and vertically */
-            int absX = GetMoveAbsValue(end, 'X');
-            int absY = GetMoveAbsValue(end, 'Y');
+            int absX = GetMoveAbsValue(targetPosition, 'X');
+            int absY = GetMoveAbsValue(targetPosition, 'Y');
 
             // If is a vertical move (I'm moving)
-            if (position.X == end.X) 
+            if (position.X == targetPosition.X) 
             {
                 // If it isn't already moved, it can go on for two cells
                 if (absY == 2 && !moved) 
                 { 
                     /* A two-cell move can only be done if there are no pieces in the route. */
                     if (isWhite) {
-                        result = !((piece[end.X, end.Y] != null) || (piece[end.X, end.Y - 1] != null));
+                        result = !((piece[targetPosition.X, targetPosition.Y] != null) || (piece[targetPosition.X, targetPosition.Y - 1] != null));
                     } else {
-                        result = !((piece[end.X, end.Y] != null) || (piece[end.X, end.Y + 1] != null));
+                        result = !((piece[targetPosition.X, targetPosition.Y] != null) || (piece[targetPosition.X, targetPosition.Y + 1] != null));
                     }
                 } 
                 // If it is already moved, it can go on for only one cell
                 else if (absY == 1) 
                 {
                     // Pawn can't move back
-                    result = isWhite ? (position.Y < end.Y) : (position.Y > end.Y);
+                    result = isWhite ? (position.Y < targetPosition.Y) : (position.Y > targetPosition.Y);
 
                     // If i'm not moving back
                     if (result) {
                         /* Checking that there isn't already a piece
                         of mine in the place where I want to move. */
-                        result = piece[end.X, end.Y] == null ? IsPositionFreeOfAllies(end) : false;
+                        result = piece[targetPosition.X, targetPosition.Y] == null ? IsPositionFreeOfAllies(targetPosition) : false;
                     }
                 }
             } 
@@ -56,7 +56,7 @@ namespace Chess.Models
             else if (absX == 1 && absY == 1)
             {
                 /* Verifying that the final position is occupied by an opponent's piece. */
-                result = piece[end.X, end.Y] != null && piece[end.X, end.Y].IsWhite != isWhite;
+                result = piece[targetPosition.X, targetPosition.Y] != null && piece[targetPosition.X, targetPosition.Y].IsWhite != isWhite;
             }
 
             /* The move can be performed: set the moved attribute to true. */

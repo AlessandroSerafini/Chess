@@ -173,12 +173,12 @@ namespace Chess.Components
                     respective kings are in check position. */
                     if (isWhiteKingCheckmated)
                     {
-                        UserMessage.Info("White King is on check");
+                        UserMessage.Info("White King is checkmated");
                     }
 
                     if (isBlackKingCheckmated)
                     {
-                        UserMessage.Info("Black King is on check");
+                        UserMessage.Info("Black King is checkmated");
                     }
                 }
 
@@ -215,7 +215,7 @@ namespace Chess.Components
             if (IsInsideChessboard(startX, startY, endX, endY)) {
 
                 Piece pieceToMove = piece[startX, startY];
-                Position end = new Position(endX, endY);
+                Position targetPosition = new Position(endX, endY);
 
                 //Check if start cell is not empty.
                 if (pieceToMove != null) {
@@ -227,18 +227,18 @@ namespace Chess.Components
                         if ((startX != endX) || (startY != endY)) {
 
                             // Check if this piece can do this move.
-                            if (pieceToMove.CheckMove(end))
+                            if (pieceToMove.CheckMove(targetPosition))
                             {
                                 result = true;
                                 lastMoveColor=pieceToMove.IsWhite;
                                 
                                 // If you're moving one of two kings, update its position.
                                 if (pieceToMove.Position == whiteKing) {
-                                    whiteKing = end;
+                                    whiteKing = targetPosition;
                                 }
                                 if (pieceToMove.Position == blackKing)
                                 {
-                                    blackKing = end;
+                                    blackKing = targetPosition;
                                 }
 
                                 // "Eat" the enemy piece.
@@ -251,7 +251,7 @@ namespace Chess.Components
                                 }
                                     
                                 // Move the piece, updating its position.
-                                pieceToMove.Position = end;
+                                pieceToMove.Position = targetPosition;
                                 piece[endX, endY] = pieceToMove;
 
                                 // Clean piece's old cell.
@@ -280,17 +280,17 @@ namespace Chess.Components
                                     }
                                 }
                             } else {
-                                UserMessage.Error("Invalid move!");
+                                UserMessage.Error("This piece can't make this move!");
                             }
 
                         } else {
-                            UserMessage.Error("Start position and end position must be different!");
+                            UserMessage.Error("Initial position and target position are the same!");
                         }
                     } else {
-                        UserMessage.Error("You can't move your opponent's piece!");
+                        UserMessage.Error("This is an opponent's piece!");
                     }
                 } else {
-                    UserMessage.Error("Selected position is empty!");
+                    UserMessage.Error("There isn't any piece here!");
                 }
             } else {
                 UserMessage.Error("Selected position does not exists!");

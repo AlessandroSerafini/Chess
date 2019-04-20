@@ -12,13 +12,13 @@ namespace Chess.Models
         /* This method overrides the relative method defined in the parent class
         by applying specific rules on the possibility of doing certain kinds of moves
         belonging to the Bishop piece. */
-        public override bool CheckMove(Position end)
+        public override bool CheckMove(Position targetPosition)
         {
             bool result = false;
 
             /* Getting how many cells the piece is moved horizontally and vertically */
-            int absX = GetMoveAbsValue(end, 'X');
-            int absY = GetMoveAbsValue(end, 'Y');
+            int absX = GetMoveAbsValue(targetPosition, 'X');
+            int absY = GetMoveAbsValue(targetPosition, 'Y');
 
             // If is a diagonal move
             if (absX == absY)
@@ -28,15 +28,15 @@ namespace Chess.Models
                 // I can go on as long as there are empty cells in my way
                 for (int i = 1; ((i < absX) && (result)); i++)
                 {
-                    if (position.X < end.X)
+                    if (position.X < targetPosition.X)
                     {
-                        result = position.Y < end.Y ?
+                        result = position.Y < targetPosition.Y ?
                                       !(piece[position.X + i, position.Y + i] != null) :
                                       !(piece[position.X + i, position.Y - i] != null);
                     }
                     else
                     {
-                        result = position.Y < end.Y ?
+                        result = position.Y < targetPosition.Y ?
                                       !(piece[position.X - i, position.Y + i] != null) :
                                       !(piece[position.X - i, position.Y - i] != null);
                     }
@@ -44,7 +44,7 @@ namespace Chess.Models
             }
 
             /* Checking that there isn't already a piece of mine in the place where I want to move. */
-            return result ? IsPositionFreeOfAllies(end) : result;
+            return result ? IsPositionFreeOfAllies(targetPosition) : result;
         }
     }
 }

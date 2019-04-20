@@ -42,7 +42,7 @@ namespace Chess.Components
         public static void Error(string message)
         {
             Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine("[ERROR] " + message);
+            Console.WriteLine("ERROR: " + message);
             Console.ResetColor();
         }
     }
