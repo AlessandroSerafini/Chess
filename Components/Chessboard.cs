@@ -34,6 +34,10 @@ namespace Chess.Components
             whitePieces = LoadPieces(true);
             blackPieces = LoadPieces(false);
         }
+
+        private bool amIProcessingPawn() {
+            return false;
+        }
         
 
         /* Adds the pieces to the chessboard by placing a specific piece based on cell.
@@ -42,62 +46,62 @@ namespace Chess.Components
         {
             List<Piece> pieces = new List<Piece>();
 
-            int colStart = isWhite ? 0 : 6;
-            int colEnd = isWhite ? 2 : 8;
+            int startRow = isWhite ? 0 : 6;
+            int endRow = isWhite ? 2 : 8;
 
-            for (int i = 0; i < 8; i++)
+            for (int currentCol = 0; currentCol < 8; currentCol++)
             {
-                for (int j = colStart; j < colEnd; j++)
+                for (int currentRow = startRow; currentRow < endRow; currentRow++)
                 {
-                    if ((isWhite && j == colStart) || (!isWhite && j != colStart))
+                    if ((isWhite && currentRow == startRow) || (!isWhite && currentRow != startRow))
                     {
-                        switch (i)
+                        switch (currentCol)
                         {
                             case 0:
                             case 7:
                                 {
-                                    piece[i, j] = new Rook(isWhite, i, j, piece);
+                                    piece[currentCol, currentRow] = new Rook(isWhite, currentCol, currentRow, piece);
                                 }
                                 break;
                             case 1:
                             case 6:
                                 {
-                                    piece[i, j] = new Knight(isWhite, i, j, piece);
+                                    piece[currentCol, currentRow] = new Knight(isWhite, currentCol, currentRow, piece);
                                 }
                                 break;
                             case 2:
                             case 5:
                                 {
-                                    piece[i, j] = new Bishop(isWhite, i, j, piece);
+                                    piece[currentCol, currentRow] = new Bishop(isWhite, currentCol, currentRow, piece);
                                 }
                                 break;
                             case 3:
                                 {
-                                    piece[i, j] = new Queen(isWhite, i, j, piece);
+                                    piece[currentCol, currentRow] = new Queen(isWhite, currentCol, currentRow, piece);
                                 }
                                 break;
                             case 4:
                                 {
-                                    piece[i, j] = new King(isWhite, i, j, piece);
+                                    piece[currentCol, currentRow] = new King(isWhite, currentCol, currentRow, piece);
 
                                     if (isWhite)
                                     {
-                                        whiteKing = piece[i, j].Start;
+                                        whiteKing = piece[currentCol, currentRow].Start;
                                     }
                                     else
                                     {
-                                        blackKing = piece[i, j].Start;
+                                        blackKing = piece[currentCol, currentRow].Start;
                                     }
 
                                 }
                                 break;
                         }
-                        pieces.Add(piece[i, j]);
+                        pieces.Add(piece[currentCol, currentRow]);
                     }
                     else
                     {
-                        piece[i, j] = new Pawn(isWhite, i, j, piece);
-                        pieces.Add(piece[i, j]);
+                        piece[currentCol, currentRow] = new Pawn(isWhite, currentCol, currentRow, piece);
+                        pieces.Add(piece[currentCol, currentRow]);
                     }
                 }
             }
