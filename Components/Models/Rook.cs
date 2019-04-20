@@ -6,7 +6,7 @@ namespace Chess.Models
     {
         public Rook(bool isWhite, int x, int y, Piece[,] matrix) : base(isWhite, x, y, matrix)
         {
-            identifier = '♖';
+            identifier = '♜';
         }
 
         /* This method overrides the relative method defined in the parent class
