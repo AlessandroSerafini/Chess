@@ -4,7 +4,7 @@ namespace Chess.Models
 {
     public class Bishop : Piece
     {
-        public Bishop(bool isWhite, int x, int y, Piece[,] matrix) : base(isWhite, x, y, matrix)
+        public Bishop(bool isWhite, int x, int y, Piece[,] piece) : base(isWhite, x, y, piece)
         {
             identifier = this.isWhite ? '♗' : '♝';
         }
@@ -28,17 +28,17 @@ namespace Chess.Models
                 // I can go on as long as there are empty cells in my way
                 for (int i = 1; ((i < absX) && (result)); i++)
                 {
-                    if (start.X < end.X)
+                    if (position.X < end.X)
                     {
-                        result = start.Y < end.Y ?
-                                      !(matrix[start.X + i, start.Y + i] != null) :
-                                      !(matrix[start.X + i, start.Y - i] != null);
+                        result = position.Y < end.Y ?
+                                      !(piece[position.X + i, position.Y + i] != null) :
+                                      !(piece[position.X + i, position.Y - i] != null);
                     }
                     else
                     {
-                        result = start.Y < end.Y ?
-                                      !(matrix[start.X - i, start.Y + i] != null) :
-                                      !(matrix[start.X - i, start.Y - i] != null);
+                        result = position.Y < end.Y ?
+                                      !(piece[position.X - i, position.Y + i] != null) :
+                                      !(piece[position.X - i, position.Y - i] != null);
                     }
                 }
             }

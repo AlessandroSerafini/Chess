@@ -4,7 +4,7 @@ namespace Chess.Models
 {
     public class Knight : Piece
     {
-        public Knight(bool isWhite, int x, int y, Piece[,] matrix) : base(isWhite, x, y, matrix)
+        public Knight(bool isWhite, int x, int y, Piece[,] piece) : base(isWhite, x, y, piece)
         {
             identifier = this.isWhite ? '♘' : '♞';
         }

@@ -4,17 +4,17 @@ namespace Chess.Models
 {
     abstract public class Piece
     {
-        protected Piece[,] matrix;  // Matrix reference
+        protected Piece[,] piece;  // Piece reference
         protected char identifier; // Piece identifier
-        protected Position start; // Piece start position
+        protected Position position; // Piece position
         protected bool isWhite;// true for white piece, false for black piece
         
         /* Definition of Piece class, which is composed by the
-        "matrix", "start" and "isWhite" properties. */
-        public Piece(bool isWhite, int x, int y, Piece[,] matrix)
+        "piece", "position" and "isWhite" properties. */
+        public Piece(bool isWhite, int x, int y, Piece[,] piece)
         {
-            this.matrix = matrix;
-            this.start = new Position(x, y);
+            this.piece = piece;
+            this.position = new Position(x, y);
             this.isWhite = isWhite;
         }
 
@@ -25,14 +25,14 @@ namespace Chess.Models
         /* This method takes care of calculating how many cells the piece is moved. */
         public int GetMoveAbsValue(Position end, char axis)
         {
-            return axis == 'X' ? Math.Abs(start.X - end.X) : Math.Abs(start.Y - end.Y);
+            return axis == 'X' ? Math.Abs(position.X - end.X) : Math.Abs(position.Y - end.Y);
         }
 
         /* This method takes care of check if the specified position is free from my pieces.  */
         public bool IsPositionFreeOfAllies(Position position)
         {
-            return matrix[position.X, position.Y] != null ?
-                (matrix[position.X, position.Y].IsWhite != isWhite) : true;
+            return piece[position.X, position.Y] != null ?
+                (piece[position.X, position.Y].IsWhite != isWhite) : true;
         }
 
         /* This method takes care of get/set piece identifier. */
@@ -61,16 +61,16 @@ namespace Chess.Models
             }
         }
 
-        /* This method takes care of get/set piece start position (Position object). */
-        public Position Start
+        /* This method takes care of get/set piece position (Position object). */
+        public Position Position
         {
             get
             {
-                return start;
+                return position;
             }
             set
             {
-                start = value;
+                position = value;
             }
         }
     }

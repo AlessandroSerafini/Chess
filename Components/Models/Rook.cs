@@ -4,7 +4,7 @@ namespace Chess.Models
 {
     public class Rook : Piece
     {
-        public Rook(bool isWhite, int x, int y, Piece[,] matrix) : base(isWhite, x, y, matrix)
+        public Rook(bool isWhite, int x, int y, Piece[,] piece) : base(isWhite, x, y, piece)
         {
             identifier = this.isWhite ? '♖' : '♜';
         }
@@ -21,7 +21,7 @@ namespace Chess.Models
             int absY = GetMoveAbsValue(end, 'Y');
 
             // If is a vertical move
-            if (start.X == end.X)
+            if (position.X == end.X)
             {
                 result = true;
 
@@ -29,18 +29,18 @@ namespace Chess.Models
                 upwards or downwards, all the cells are empty. */
                 for (int i = 1; ((i < absY) && (result)); i++)
                 {
-                    if (start.Y < end.Y)
+                    if (position.Y < end.Y)
                     {
-                        result = matrix[start.X, start.Y + i] == null;
+                        result = piece[position.X, position.Y + i] == null;
                     }
-                    else if (start.Y > end.Y)
+                    else if (position.Y > end.Y)
                     {
-                        result = matrix[start.X, start.Y - i] == null;
+                        result = piece[position.X, position.Y - i] == null;
                     }
                 }
             }
             // If is an horizontal move
-            else if (start.Y == end.Y)
+            else if (position.Y == end.Y)
             {
                 result = true;
 
@@ -48,13 +48,13 @@ namespace Chess.Models
                 left or right, all the cells are empty. */
                 for (int i = 1; ((i < absX) && (result)); i++)
                 {
-                    if (start.X < end.X)
+                    if (position.X < end.X)
                     {
-                        result = matrix[start.X + i, start.Y] == null;
+                        result = piece[position.X + i, position.Y] == null;
                     }
-                    else if (start.X < end.X)
+                    else if (position.X < end.X)
                     {
-                        result = matrix[start.X - i, start.Y] == null;
+                        result = piece[position.X - i, position.Y] == null;
                     }
                 }
             }

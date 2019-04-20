@@ -80,11 +80,11 @@ namespace Chess.Components
 
                                     if (isWhite)
                                     {
-                                        whiteKing = piece[currentCol, currentRow].Start;
+                                        whiteKing = piece[currentCol, currentRow].Position;
                                     }
                                     else
                                     {
-                                        blackKing = piece[currentCol, currentRow].Start;
+                                        blackKing = piece[currentCol, currentRow].Position;
                                     }
 
                                 }
@@ -233,10 +233,10 @@ namespace Chess.Components
                                 lastMoveColor=pieceToMove.IsWhite;
                                 
                                 // If you're moving one of two kings, update its position.
-                                if (pieceToMove.Start == whiteKing) {
+                                if (pieceToMove.Position == whiteKing) {
                                     whiteKing = end;
                                 }
-                                if (pieceToMove.Start == blackKing)
+                                if (pieceToMove.Position == blackKing)
                                 {
                                     blackKing = end;
                                 }
@@ -251,7 +251,7 @@ namespace Chess.Components
                                 }
                                     
                                 // Move the piece, updating its position.
-                                pieceToMove.Start = end;
+                                pieceToMove.Position = end;
                                 piece[endX, endY] = pieceToMove;
 
                                 // Clean piece's old cell.
