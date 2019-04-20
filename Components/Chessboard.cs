@@ -6,14 +6,12 @@ namespace Chess.Components
 {
     public class Chessboard
     {
-        private Piece[,] piece;
-        private Position whiteKing, blackKing;
-        private List<Piece> whitePieces, blackPieces;
-
-        private bool lastMoveColor = false;
-
-        private bool isWhiteKingOnCheck = false, isBlackKingOnCheck = false;
-        private bool isWhiteKingMatechecked = false, isBlackKingMatechecked = false;
+        private Piece[,] piece; // Single pieces composed by column and row position coordinates
+        private Position whiteKing, blackKing; // Kings position composed by column and row coordinates
+        private List<Piece> whitePieces, blackPieces; // List of white and black pieces on chessboard
+        private bool lastMoveColor = false; // Last color move: true for white, false for black
+        private bool isWhiteKingCheckmated = false, isBlackKingCheckmated = false; // Tells if kings are on check 
+        private bool isWhiteKingBeaten = false, isBlackKingBeaten = false; // Tells if kings are died
 
         public Chessboard() {
             piece = new Piece[8, 8];
@@ -34,11 +32,6 @@ namespace Chess.Components
             whitePieces = LoadPieces(true);
             blackPieces = LoadPieces(false);
         }
-
-        private bool amIProcessingPawn() {
-            return false;
-        }
-        
 
         /* Adds the pieces to the chessboard by placing a specific piece based on cell.
         This method accepts the color type (default is the same color as white). */
@@ -175,14 +168,14 @@ namespace Chess.Components
 
                     /* Check and eventually communicate if the
                     respective kings are in check position. */
-                    if (isWhiteKingOnCheck)
+                    if (isWhiteKingCheckmated)
                     {
-                        UserMessage.Info("White King is on check", ConsoleColor.Green);
+                        UserMessage.Info("White King is on check");
                     }
 
-                    if (isBlackKingOnCheck)
+                    if (isBlackKingCheckmated)
                     {
-                        UserMessage.Info("Black King is on check", ConsoleColor.Green);
+                        UserMessage.Info("Black King is on check");
                     }
                 }
 
@@ -213,7 +206,7 @@ namespace Chess.Components
         {
             bool result = false;
 
-            isWhiteKingOnCheck = isBlackKingOnCheck = false;
+            isWhiteKingCheckmated = isBlackKingCheckmated = false;
 
             // Check if move is inside the chessboard.
             if (IsInsideChessboard(startX, startY, endX, endY)) {
@@ -267,20 +260,20 @@ namespace Chess.Components
                                 {
                                     if (piece[endX, endY].IsWhite)
                                     {
-                                        isWhiteKingMatechecked = true;
+                                        isWhiteKingBeaten = true;
                                     }
                                     else
                                     {
-                                        isBlackKingMatechecked = true;
+                                        isBlackKingBeaten = true;
                                     }
                                 }
                                 else
                                 {
                                     // If checkmate wasn't done, verify if check was done.
                                     if (piece[endX, endY].IsWhite) {
-                                        isBlackKingOnCheck = IsCheckMate(!piece[endX, endY].IsWhite);
+                                        isBlackKingCheckmated = IsCheckMate(!piece[endX, endY].IsWhite);
                                     } else {
-                                        isWhiteKingOnCheck = IsCheckMate(!piece[endX, endY].IsWhite);
+                                        isWhiteKingCheckmated = IsCheckMate(!piece[endX, endY].IsWhite);
                                     }
                                 }
                             } else {
@@ -330,6 +323,7 @@ namespace Chess.Components
             return result;
         }
 
+        // This method tells me if i can do another turn, checking checkmates.
         public bool CanIDoAnotherTurn {
             get
             {
@@ -351,7 +345,7 @@ namespace Chess.Components
         {
             get
             {
-                return isWhiteKingMatechecked;
+                return isWhiteKingBeaten;
             }
         }
 
@@ -360,7 +354,7 @@ namespace Chess.Components
         {
             get
             {
-                return isBlackKingMatechecked;
+                return isBlackKingBeaten;
             }
         }
     }

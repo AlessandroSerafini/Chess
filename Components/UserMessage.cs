@@ -23,10 +23,10 @@ namespace Chess.Components
         }
 
         /* This method takes care to communicate with the user by printing a message on the screen. */
-        public static void Info(string message, ConsoleColor color = ConsoleColor.White) 
+        public static void Info(string message) 
         {
-            Console.ForegroundColor = color;
-            Console.WriteLine("[INFO] " + message);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(message);
             Console.ResetColor();
         }
 
