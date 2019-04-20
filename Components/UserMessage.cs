@@ -9,8 +9,7 @@ namespace Chess.Components
         public static void WhatPieceYouWantMove(bool isWhite)
         {
             string player = isWhite ? "WHITE" : "BLACK";
-            Console.Write("[" + player + "], select the position where to move the piece (X,Y): ");
-            Console.ResetColor();
+            Console.Write(player + ": Select the position where to move the piece (x,y): ");
         }
 
         /* This method takes care to ask the user of a specific color to select
@@ -18,8 +17,7 @@ namespace Chess.Components
         public static void WhereYouWantMovePiece(bool isWhite)
         {
             string player = isWhite ? "WHITE" : "BLACK";
-            Console.Write("[" + player + "], select the piece to move (X,Y): ");
-            Console.ResetColor();
+            Console.Write(player + ": Select the piece to move (x,y): ");
         }
 
         /* This method takes care to communicate with the user by printing a message on the screen. */

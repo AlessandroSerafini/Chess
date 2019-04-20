@@ -19,10 +19,11 @@ namespace Chess.Components
 
         public void Init()
         {
-            // Initialization of the chessboard loading pieces for both teams.
-            LoadPieces();
-            // Draw the playing field.
-            Draw();
+            Console.Clear();
+            UserMessage.Info("\n[\"C# CHESS GAME\"]");
+            UserMessage.Info("\nMake the first move with white player choosing the piece you want to move by entering coordinates in (x, y) format, then your black opponent will have to do the same.\nThe game ends if a player with checkmated king fails to release it in a single move.");
+            LoadPieces(); // Initialization of the chessboard loading pieces for both teams.
+            Draw(false); // Draw the playing field.
         }
 
         /* Initialization of the chessboard: this method takes care of drawing all the pieces for
@@ -104,9 +105,11 @@ namespace Chess.Components
 
         /* Draw the playing field highlighting the boxes with the characteristic
         "checkerboard" colors till complete a matrix of 8 columns and 8 rows. */
-        private void Draw()
+        private void Draw(bool clear = true)
         {
-            Console.Clear();
+            if(clear) {
+                Console.Clear();
+            }
             for (int j = 7; j >= 0; j--)
             {
                 Console.Write("\n" + (j + 1) + "   ");
