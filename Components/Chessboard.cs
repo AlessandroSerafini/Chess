@@ -119,7 +119,7 @@ namespace Chess.Components
                 Console.Write("\n" + (j + 1) + "   ");
                 for (int i = 0; i < 8; i++)
                 {
-                    Console.ForegroundColor = IsWhiteColor(i, j) ? ConsoleColor.DarkGreen : ConsoleColor.Blue;   
+                    Console.ForegroundColor = ConsoleColor.Black;   
                     Console.BackgroundColor = i%2==0 ? j%2==0 ? ConsoleColor.DarkGray : ConsoleColor.Gray : j%2==0 ? ConsoleColor.Gray : ConsoleColor.DarkGray ; 
                     DrawPiece(i, j);
                     Console.ResetColor();
@@ -137,13 +137,6 @@ namespace Chess.Components
         {
             char pieceToDraw = piece[i, j] != null ? piece[i, j].Identifier : ' ';
             Console.Write(" " + pieceToDraw + "  ");
-        }
-
-        /* This method returns the color of the piece in the given position
-        (true for white piece, false for black piece). */
-        public bool IsWhiteColor(int i, int j)
-        {
-            return piece[i, j] != null ? piece[i, j].IsWhite : false;
         }
 
         /* This method takes care of reading the position of the move that

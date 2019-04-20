@@ -8,7 +8,6 @@ namespace Chess.Components
         the position where to move the piece by printing a message on the screen. */
         public static void WhatPieceYouWantMove(bool isWhite)
         {
-            Console.ForegroundColor = isWhite ? ConsoleColor.DarkGreen : ConsoleColor.Blue;
             string player = isWhite ? "WHITE" : "BLACK";
             Console.Write("[" + player + "], select the position where to move the piece (X,Y): ");
             Console.ResetColor();
@@ -18,7 +17,6 @@ namespace Chess.Components
         the piece with which makes the move by printing a message on the screen. */
         public static void WhereYouWantMovePiece(bool isWhite)
         {
-            Console.ForegroundColor = isWhite ? ConsoleColor.DarkGreen : ConsoleColor.Blue;
             string player = isWhite ? "WHITE" : "BLACK";
             Console.Write("[" + player + "], select the piece to move (X,Y): ");
             Console.ResetColor();

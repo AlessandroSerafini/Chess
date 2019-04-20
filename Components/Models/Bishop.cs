@@ -6,7 +6,7 @@ namespace Chess.Models
     {
         public Bishop(bool isWhite, int x, int y, Piece[,] matrix) : base(isWhite, x, y, matrix)
         {
-            identifier = '♝';
+            identifier = this.isWhite ? '♗' : '♝';
         }
 
         /* This method overrides the relative method defined in the parent class
