@@ -6,7 +6,7 @@ namespace Chess.Models
     {
         public Rook(bool isWhite, int x, int y, Piece[,] piece) : base(isWhite, x, y, piece)
         {
-            identifier = 'R';
+            id = 'R';
             symbol = this.isWhite ? '♖' : '♜';
         }
 

@@ -6,7 +6,7 @@ namespace Chess.Models
     {
         public King(bool isWhite, int x, int y, Piece[,] piece) : base(isWhite, x, y, piece)
         {
-            identifier = 'K';
+            id = 'K';
             symbol = this.isWhite ? '♔' : '♚';
         }
 

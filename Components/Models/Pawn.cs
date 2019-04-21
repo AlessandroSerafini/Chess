@@ -10,7 +10,7 @@ namespace Chess.Models
 
         public Pawn(bool isWhite, int x, int y, Piece[,] piece) : base(isWhite, x, y, piece)
         {
-            identifier = 'P';
+            id = 'P';
             symbol = this.isWhite ? '♙' : '♟';
             moved = false;
         }
@@ -64,7 +64,7 @@ namespace Chess.Models
             if (result) {
                 moved = true;
             }
-
+            
             return result;
         }
     }

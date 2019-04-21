@@ -148,7 +148,6 @@ namespace Chess.Components
                 coordinates = Console.ReadLine().Split(',');
                 int targetPositionX = int.Parse(coordinates[0]) - 1;
                 int targetPositionY = int.Parse(coordinates[1]) - 1;
-
                 
                 if (Move(positionX, positionY, targetPositionX, targetPositionY, isWhite)) {
 
@@ -183,7 +182,6 @@ namespace Chess.Components
             return (positionX >= 0 && positionX < 8) && (positionY >= 0 && positionY < 8) &&
                 (targetPositionX >= 0 && targetPositionX < 8) && (targetPositionY >= 0 && targetPositionY < 8);
         }
-
 
         /* This method takes care of moving a piece from a position to another,
         taking care to check the validity of the move. Otherwise an error will be printed on screen. */

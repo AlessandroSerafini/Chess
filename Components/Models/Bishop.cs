@@ -6,7 +6,7 @@ namespace Chess.Models
     {
         public Bishop(bool isWhite, int x, int y, Piece[,] piece) : base(isWhite, x, y, piece)
         {
-            identifier = 'B';
+            id = 'B';
             symbol = this.isWhite ? '♗' : '♝';
         }
 

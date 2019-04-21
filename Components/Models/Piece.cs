@@ -5,10 +5,10 @@ namespace Chess.Models
     abstract public class Piece
     {
         protected Piece[,] piece;  // Piece reference
-        protected char identifier; // Piece identifier
+        protected char id; // Piece identifier
         protected char symbol; // Piece symbol used in chessboard
         protected Position position; // Piece position
-        protected bool isWhite;// true for white piece, false for black piece
+        protected bool isWhite; // true for white piece, false for black piece
         
         /* Definition of Piece class, which is composed by the
         "piece", "position" and "isWhite" properties. */
@@ -50,7 +50,7 @@ namespace Chess.Models
         {
             get
             {
-                return identifier == 'K';
+                return id == 'K';
             }
         }
 
