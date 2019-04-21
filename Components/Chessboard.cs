@@ -7,7 +7,6 @@ namespace Chess.Components
     public class Chessboard
     {
         private Piece[,] piece; // Single pieces composed by column and row position coordinates
-        private Position whiteKing, blackKing; // Kings position composed by column and row coordinates
         private List<Piece> whitePieces, blackPieces; // List of white and black pieces on chessboard
         private bool lastMoveColor = false; // Last color move: true for white, false for black
         private bool isWhiteKingCheckmated = false, isBlackKingCheckmated = false; // Tells if kings are on check 
@@ -77,11 +76,6 @@ namespace Chess.Components
                             case 4:
                                 {
                                     piece[currentCol, currentRow] = new King(isWhite, currentCol, currentRow, piece);
-
-                                    whiteKing = isWhite ? piece[currentCol, currentRow].Position : whiteKing;
-                                    blackKing = !isWhite ? piece[currentCol, currentRow].Position : blackKing;
-                                    
-
                                 }
                                 break;
                         }
@@ -126,7 +120,7 @@ namespace Chess.Components
         // This method simply takes care of drawing the piece.
         public void DrawPiece(int i, int j)
         {
-            char pieceToDraw = piece[i, j] != null ? piece[i, j].Identifier : ' ';
+            char pieceToDraw = piece[i, j] != null ? piece[i, j].Symbol : ' ';
             Console.Write(" " + pieceToDraw + "  ");
         }
 
@@ -226,15 +220,6 @@ namespace Chess.Components
                             {
                                 result = true;
                                 lastMoveColor=pieceToMove.IsWhite;
-                                
-                                // If you're moving one of two kings, update its position.
-                                if (pieceToMove.Position == whiteKing) {
-                                    whiteKing = targetPosition;
-                                }
-                                if (pieceToMove.Position == blackKing)
-                                {
-                                    blackKing = targetPosition;
-                                }
 
                                 // "Eat" the enemy piece.
                                 if (piece[endX, endY] != null) {
@@ -301,7 +286,7 @@ namespace Chess.Components
             if (isWhite) 
             {
                 foreach (Piece piece in blackPieces) {
-                    if (piece.CheckMove(whiteKing)) 
+                    if (piece.CheckMove(getKingPosition())) 
                     {
                         result = true;
                     }
@@ -309,7 +294,7 @@ namespace Chess.Components
             } else {
                 foreach (Piece piece in whitePieces)
                 {
-                    if (piece.CheckMove(blackKing))
+                    if (piece.CheckMove(getKingPosition(false)))
                     {
                         result = true;
                     }
@@ -319,11 +304,30 @@ namespace Chess.Components
             return result;
         }
 
+        /* This method checks whether checkmate has been done based on color:
+        true for white king checkmate, false for black king checkmate */
+        public bool getCheckMate(bool isWhite = true)
+        {
+            return isWhite ? isWhiteKingBeaten : isBlackKingBeaten;
+        }
+
+        // This method return King position by color: true for wite king, false for black king
+        private Position getKingPosition(bool isWhite = true)
+        {
+            Position kingPosition = new Position(0,0);
+
+            foreach (Piece piece in isWhite ? whitePieces : blackPieces)
+            {
+                kingPosition = piece.IsKing ? piece.Position : kingPosition;
+            }
+            return kingPosition;
+        }
+
         // This method tells me if i can do another turn, checking checkmates.
         public bool CanIDoAnotherTurn {
             get
             {
-                return !CheckMateBlack && !CheckMateWhite;
+                return !getCheckMate(false) && !getCheckMate();
             }
         }
 
@@ -333,24 +337,6 @@ namespace Chess.Components
             get
             {
                 return lastMoveColor;
-            }
-        }
-
-        // This method checks whether checkmate has been done against the white king.
-        private bool CheckMateWhite
-        {
-            get
-            {
-                return isWhiteKingBeaten;
-            }
-        }
-
-        // This method checks whether checkmate has been done against the black king.
-        public bool CheckMateBlack
-        {
-            get
-            {
-                return isBlackKingBeaten;
             }
         }
     }

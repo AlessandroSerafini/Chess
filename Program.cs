@@ -33,7 +33,7 @@ namespace Chess
             }
 
             // In the event that a user has made checkmates against the opponent, communicates the end of the game and the winner.
-            UserMessage.UserWins(chessboard.CheckMateBlack);
+            UserMessage.UserWins(chessboard.getCheckMate(false));
             Console.ReadKey();
         }
     }

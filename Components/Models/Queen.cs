@@ -6,7 +6,8 @@ namespace Chess.Models
     {
         public Queen(bool isWhite, int x, int y, Piece[,] piece) : base(isWhite, x, y, piece)
         {
-            identifier = this.isWhite ? '♕' : '♛';
+            identifier = 'Q';
+            symbol = this.isWhite ? '♕' : '♛';
         }
 
         /* This method overrides the relative method defined in the parent class
