@@ -78,14 +78,9 @@ namespace Chess.Components
                                 {
                                     piece[currentCol, currentRow] = new King(isWhite, currentCol, currentRow, piece);
 
-                                    if (isWhite)
-                                    {
-                                        whiteKing = piece[currentCol, currentRow].Position;
-                                    }
-                                    else
-                                    {
-                                        blackKing = piece[currentCol, currentRow].Position;
-                                    }
+                                    whiteKing = isWhite ? piece[currentCol, currentRow].Position : whiteKing;
+                                    blackKing = !isWhite ? piece[currentCol, currentRow].Position : blackKing;
+                                    
 
                                 }
                                 break;
@@ -250,11 +245,9 @@ namespace Chess.Components
                                     }
                                 }
                                     
-                                // Move the piece, updating its position.
+                                // Move the piece, updating its position and clean piece's old cell.
                                 pieceToMove.Position = targetPosition;
                                 piece[endX, endY] = pieceToMove;
-
-                                // Clean piece's old cell.
                                 piece[startX, startY] = null;
                                 pieceToMove = null;
 
