@@ -29,13 +29,13 @@ namespace Chess.Components
         both teams on chessboard in order to obtain a vail game field. */
         private void LoadPieces()
         {
-            whitePieces = LoadPieces(true);
-            blackPieces = LoadPieces(false);
+            whitePieces = CreatePieces(true);
+            blackPieces = CreatePieces(false);
         }
 
         /* Adds the pieces to the chessboard by placing a specific piece based on cell.
         This method accepts the color type (default is the same color as white). */
-        private List<Piece> LoadPieces(bool isWhite)
+        private List<Piece> CreatePieces(bool isWhite)
         {
             List<Piece> pieces = new List<Piece>();
 
@@ -177,25 +177,25 @@ namespace Chess.Components
         }
 
         // This method takes care of checking if the move is regularly inside the chessboard.
-        private bool IsInsideChessboard(int positionX, int positionY, int targetPositionX, int targetPositionY)
+        private bool IsInsideBoard(int positionX, int positionY, int targetX, int targetY)
         {
             return (positionX >= 0 && positionX < 8) && (positionY >= 0 && positionY < 8) &&
-                (targetPositionX >= 0 && targetPositionX < 8) && (targetPositionY >= 0 && targetPositionY < 8);
+                (targetX >= 0 && targetX < 8) && (targetY >= 0 && targetY < 8);
         }
 
         /* This method takes care of moving a piece from a position to another,
         taking care to check the validity of the move. Otherwise an error will be printed on screen. */
-        public bool Move(int positionX, int positionY, int targetPositionX, int targetPositionY, bool isWhite)
+        public bool Move(int x, int y, int targetX, int targetY, bool isWhite)
         {
             bool result = false;
 
             isWhiteKingCheckmated = isBlackKingCheckmated = false;
 
             // Check if move is inside the chessboard.
-            if (IsInsideChessboard(positionX, positionY, targetPositionX, targetPositionY)) {
+            if (IsInsideBoard(x, y, targetX, targetY)) {
 
-                Piece pieceToMove = piece[positionX, positionY];
-                Position targetPosition = new Position(targetPositionX, targetPositionY);
+                Piece pieceToMove = piece[x, y];
+                Position targetPosition = new Position(targetX, targetY);
 
                 //Check if start cell is not empty.
                 if (pieceToMove != null) {
@@ -204,7 +204,7 @@ namespace Chess.Components
                     if (pieceToMove.IsWhite == isWhite) {
 
                         //Check if initial and final position are different.
-                        if ((positionX != targetPositionX) || (positionY != targetPositionY)) {
+                        if ((x != targetX) || (y != targetY)) {
 
                             // Check if this piece can do this move.
                             if (pieceToMove.CheckMove(targetPosition))
@@ -213,24 +213,24 @@ namespace Chess.Components
                                 lastMoveColor=pieceToMove.IsWhite;
 
                                 // "Eat" the enemy piece.
-                                if (piece[targetPositionX, targetPositionY] != null) {
-                                    if (piece[targetPositionX, targetPositionY].IsWhite) {
-                                        whitePieces.Remove(piece[targetPositionX, targetPositionY]);
+                                if (piece[targetX, targetY] != null) {
+                                    if (piece[targetX, targetY].IsWhite) {
+                                        whitePieces.Remove(piece[targetX, targetY]);
                                     } else {
-                                        blackPieces.Remove(piece[targetPositionX, targetPositionY]);
+                                        blackPieces.Remove(piece[targetX, targetY]);
                                     }
                                 }
                                     
                                 // Move the piece, updating its position and clean piece's old cell.
                                 pieceToMove.Position = targetPosition;
-                                piece[targetPositionX, targetPositionY] = pieceToMove;
-                                piece[positionX, positionY] = null;
+                                piece[targetX, targetY] = pieceToMove;
+                                piece[x, y] = null;
                                 pieceToMove = null;
 
                                 // Check if checkmate was done at the end of the move.
-                                if (IsCheckMate(piece[targetPositionX, targetPositionY].IsWhite))
+                                if (IsCheckMate(piece[targetX, targetY].IsWhite))
                                 {
-                                    if (piece[targetPositionX, targetPositionY].IsWhite)
+                                    if (piece[targetX, targetY].IsWhite)
                                     {
                                         isWhiteKingBeaten = true;
                                     }
@@ -242,10 +242,10 @@ namespace Chess.Components
                                 else
                                 {
                                     // If checkmate wasn't done, verify if check was done.
-                                    if (piece[targetPositionX, targetPositionY].IsWhite) {
-                                        isBlackKingCheckmated = IsCheckMate(!piece[targetPositionX, targetPositionY].IsWhite);
+                                    if (piece[targetX, targetY].IsWhite) {
+                                        isBlackKingCheckmated = IsCheckMate(!piece[targetX, targetY].IsWhite);
                                     } else {
-                                        isWhiteKingCheckmated = IsCheckMate(!piece[targetPositionX, targetPositionY].IsWhite);
+                                        isWhiteKingCheckmated = IsCheckMate(!piece[targetX, targetY].IsWhite);
                                     }
                                 }
                             } else {
@@ -277,7 +277,7 @@ namespace Chess.Components
             if (isWhite) 
             {
                 foreach (Piece piece in blackPieces) {
-                    if (piece.CheckMove(getKingPosition())) 
+                    if (piece.CheckMove(GetKingPosition())) 
                     {
                         result = true;
                     }
@@ -285,7 +285,7 @@ namespace Chess.Components
             } else {
                 foreach (Piece piece in whitePieces)
                 {
-                    if (piece.CheckMove(getKingPosition(false)))
+                    if (piece.CheckMove(GetKingPosition(false)))
                     {
                         result = true;
                     }
@@ -297,13 +297,13 @@ namespace Chess.Components
 
         /* This method checks whether checkmate has been done based on color:
         true for white king checkmate, false for black king checkmate */
-        public bool getCheckMate(bool isWhite = true)
+        public bool GetCheckMate(bool isWhite = true)
         {
             return isWhite ? isWhiteKingBeaten : isBlackKingBeaten;
         }
 
         // This method return King position by color: true for wite king, false for black king
-        private Position getKingPosition(bool isWhite = true)
+        private Position GetKingPosition(bool isWhite = true)
         {
             Position kingPosition = new Position(0,0);
 
@@ -318,7 +318,7 @@ namespace Chess.Components
         public bool CanIDoAnotherTurn {
             get
             {
-                return !getCheckMate(false) && !getCheckMate();
+                return !GetCheckMate(false) && !GetCheckMate();
             }
         }
 
