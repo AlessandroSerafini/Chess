@@ -138,36 +138,29 @@ namespace Chess.Components
                 /* Interpreting the starting coordinates in the (X,Y) format
                 and separating the values into two variables. */
                 coordinates = Console.ReadLine().Split(',');
-                int startX = int.Parse(coordinates[0]) - 1;
-                int startY = int.Parse(coordinates[1]) - 1;
+                int positionX = int.Parse(coordinates[0]) - 1;
+                int positionY = int.Parse(coordinates[1]) - 1;
 
                 UserMessage.WhatPieceYouWantMove(isWhite);
                 
                 /* Interpreting the final coordinates in the (X,Y) format
                 and separating the values into two variables. */
                 coordinates = Console.ReadLine().Split(',');
-                int endX = int.Parse(coordinates[0]) - 1;
-                int endY = int.Parse(coordinates[1]) - 1;
+                int targetPositionX = int.Parse(coordinates[0]) - 1;
+                int targetPositionY = int.Parse(coordinates[1]) - 1;
 
                 
-                if (Move(startX, startY, endX, endY, isWhite)) {
+                if (Move(positionX, positionY, targetPositionX, targetPositionY, isWhite)) {
 
                     result = true;
 
                     Draw();
 
-
-
                     /* Check and eventually communicate if the
                     respective kings are in check position. */
-                    if (isWhiteKingCheckmated)
+                    if (isWhiteKingCheckmated || isBlackKingCheckmated)
                     {
-                        UserMessage.Info("White King is checkmated");
-                    }
-
-                    if (isBlackKingCheckmated)
-                    {
-                        UserMessage.Info("Black King is checkmated");
+                        UserMessage.Info((isWhiteKingCheckmated ? "White" : "Black") + " king is checkmated");
                     }
                 }
 
@@ -185,26 +178,26 @@ namespace Chess.Components
         }
 
         // This method takes care of checking if the move is regularly inside the chessboard.
-        private bool IsInsideChessboard(int startX, int startY, int endX, int endY)
+        private bool IsInsideChessboard(int positionX, int positionY, int targetPositionX, int targetPositionY)
         {
-            return (startX >= 0 && startX < 8) && (startY >= 0 && startY < 8) &&
-                (endX >= 0 && endX < 8) && (endY >= 0 && endY < 8);
+            return (positionX >= 0 && positionX < 8) && (positionY >= 0 && positionY < 8) &&
+                (targetPositionX >= 0 && targetPositionX < 8) && (targetPositionY >= 0 && targetPositionY < 8);
         }
 
 
         /* This method takes care of moving a piece from a position to another,
         taking care to check the validity of the move. Otherwise an error will be printed on screen. */
-        public bool Move(int startX, int startY, int endX, int endY, bool isWhite)
+        public bool Move(int positionX, int positionY, int targetPositionX, int targetPositionY, bool isWhite)
         {
             bool result = false;
 
             isWhiteKingCheckmated = isBlackKingCheckmated = false;
 
             // Check if move is inside the chessboard.
-            if (IsInsideChessboard(startX, startY, endX, endY)) {
+            if (IsInsideChessboard(positionX, positionY, targetPositionX, targetPositionY)) {
 
-                Piece pieceToMove = piece[startX, startY];
-                Position targetPosition = new Position(endX, endY);
+                Piece pieceToMove = piece[positionX, positionY];
+                Position targetPosition = new Position(targetPositionX, targetPositionY);
 
                 //Check if start cell is not empty.
                 if (pieceToMove != null) {
@@ -213,7 +206,7 @@ namespace Chess.Components
                     if (pieceToMove.IsWhite == isWhite) {
 
                         //Check if initial and final position are different.
-                        if ((startX != endX) || (startY != endY)) {
+                        if ((positionX != targetPositionX) || (positionY != targetPositionY)) {
 
                             // Check if this piece can do this move.
                             if (pieceToMove.CheckMove(targetPosition))
@@ -222,24 +215,24 @@ namespace Chess.Components
                                 lastMoveColor=pieceToMove.IsWhite;
 
                                 // "Eat" the enemy piece.
-                                if (piece[endX, endY] != null) {
-                                    if (piece[endX, endY].IsWhite) {
-                                        whitePieces.Remove(piece[endX, endY]);
+                                if (piece[targetPositionX, targetPositionY] != null) {
+                                    if (piece[targetPositionX, targetPositionY].IsWhite) {
+                                        whitePieces.Remove(piece[targetPositionX, targetPositionY]);
                                     } else {
-                                        blackPieces.Remove(piece[endX, endY]);
+                                        blackPieces.Remove(piece[targetPositionX, targetPositionY]);
                                     }
                                 }
                                     
                                 // Move the piece, updating its position and clean piece's old cell.
                                 pieceToMove.Position = targetPosition;
-                                piece[endX, endY] = pieceToMove;
-                                piece[startX, startY] = null;
+                                piece[targetPositionX, targetPositionY] = pieceToMove;
+                                piece[positionX, positionY] = null;
                                 pieceToMove = null;
 
                                 // Check if checkmate was done at the end of the move.
-                                if (IsCheckMate(piece[endX, endY].IsWhite))
+                                if (IsCheckMate(piece[targetPositionX, targetPositionY].IsWhite))
                                 {
-                                    if (piece[endX, endY].IsWhite)
+                                    if (piece[targetPositionX, targetPositionY].IsWhite)
                                     {
                                         isWhiteKingBeaten = true;
                                     }
@@ -251,10 +244,10 @@ namespace Chess.Components
                                 else
                                 {
                                     // If checkmate wasn't done, verify if check was done.
-                                    if (piece[endX, endY].IsWhite) {
-                                        isBlackKingCheckmated = IsCheckMate(!piece[endX, endY].IsWhite);
+                                    if (piece[targetPositionX, targetPositionY].IsWhite) {
+                                        isBlackKingCheckmated = IsCheckMate(!piece[targetPositionX, targetPositionY].IsWhite);
                                     } else {
-                                        isWhiteKingCheckmated = IsCheckMate(!piece[endX, endY].IsWhite);
+                                        isWhiteKingCheckmated = IsCheckMate(!piece[targetPositionX, targetPositionY].IsWhite);
                                     }
                                 }
                             } else {
