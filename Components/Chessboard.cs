@@ -131,48 +131,56 @@ namespace Chess.Components
         public bool GetMoveCoordinates(bool isWhite)
         {
             bool result = false;
-            try
-            {
-                string[] coordinates;
 
+            string[] coordinates;
+
+            try {
                 /* Interpreting the starting coordinates in the (X,Y) format
                 and separating the values into two variables. */
                 coordinates = Console.ReadLine().Split(',');
+                
                 int positionX = int.Parse(coordinates[0]) - 1;
                 int positionY = int.Parse(coordinates[1]) - 1;
-
-                UserMessage.WhatPieceYouWantMove(isWhite);
                 
-                /* Interpreting the final coordinates in the (X,Y) format
-                and separating the values into two variables. */
-                coordinates = Console.ReadLine().Split(',');
-                int targetPositionX = int.Parse(coordinates[0]) - 1;
-                int targetPositionY = int.Parse(coordinates[1]) - 1;
-                
-                if (Move(positionX, positionY, targetPositionX, targetPositionY, isWhite)) {
+                UserMessage.WhereYouWantMovePiece(isWhite);
+                try {
+                    /* Interpreting the final coordinates in the (X,Y) format
+                    and separating the values into two variables. */
+                    coordinates = Console.ReadLine().Split(',');
+                    int targetPositionX = int.Parse(coordinates[0]) - 1;
+                    int targetPositionY = int.Parse(coordinates[1]) - 1;
 
-                    result = true;
+                    if (Move(positionX, positionY, targetPositionX, targetPositionY, isWhite)) {
 
-                    Draw();
+                        result = true;
 
-                    /* Check and eventually communicate if the
-                    respective kings are in check position. */
-                    if (isWhiteKingCheckmated || isBlackKingCheckmated)
-                    {
-                        UserMessage.Info((isWhiteKingCheckmated ? "White" : "Black") + " king is checkmated");
+                        Draw();
+
+                        /* Check and eventually communicate if the
+                        respective kings are in check position. */
+                        if (isWhiteKingCheckmated || isBlackKingCheckmated)
+                        {
+                            UserMessage.Info((isWhiteKingCheckmated ? "White" : "Black") + " king is checkmated");
+                        }
                     }
                 }
-
+                catch (Exception ex)            
+                {                
+                    if (ex is FormatException || ex is IndexOutOfRangeException)
+                    {
+                        UserMessage.Error("Invalid coordinates: you should use x,y format");
+                    }
+                    return false;
+                }
             }
-            catch (System.FormatException)
-            {
-                UserMessage.Error("Wrong input format, input must be: X,Y");
+            catch (Exception ex)            
+            {                
+                if (ex is FormatException || ex is IndexOutOfRangeException)
+                {
+                    UserMessage.Error("Invalid coordinates: you should use x,y format");
+                }
+                return false;
             }
-            catch (System.IndexOutOfRangeException)
-            {
-                UserMessage.Error("Wrong input format, input must be: X,Y");
-            }
-
             return result;
         }
 
@@ -259,7 +267,7 @@ namespace Chess.Components
                         UserMessage.Error("This is an opponent's piece!");
                     }
                 } else {
-                    UserMessage.Error("There isn't any piece here!");
+                    UserMessage.Error("This cell is empty!");
                 }
             } else {
                 UserMessage.Error("Selected position does not exists!");

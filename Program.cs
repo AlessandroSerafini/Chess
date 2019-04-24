@@ -20,13 +20,13 @@ namespace Chess
                     // Asking the user to make his move by entering valid coordinates.
                     do
                     {
-                        UserMessage.WhereYouWantMovePiece(true);
+                        UserMessage.WhatPieceYouWantMove(true);
                     } while (!chessboard.GetMoveCoordinates(true));
                 }
                 else {
                     do
                     {
-                        UserMessage.WhereYouWantMovePiece(false);
+                        UserMessage.WhatPieceYouWantMove(false);
                     } while (!chessboard.GetMoveCoordinates(false));
                 }
 

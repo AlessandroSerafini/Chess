@@ -5,19 +5,19 @@ namespace Chess.Components
     {
 
         /* This method takes care to ask the user of a specific color to select
-        the position where to move the piece by printing a message on the screen. */
+        the piece with which makes the move by printing a message on the screen. */
         public static void WhatPieceYouWantMove(bool isWhite)
         {
-            string player = isWhite ? "WHITE" : "BLACK";
-            Console.Write(player + ": Select the position where to move the piece (x,y): ");
+            string player = (isWhite ? "WHITE" : "BLACK") + " PLAYER";
+            Console.Write(player + ": What piece you want to move? (x,y): ");
         }
 
         /* This method takes care to ask the user of a specific color to select
-        the piece with which makes the move by printing a message on the screen. */
+        the position where to move the piece by printing a message on the screen. */
         public static void WhereYouWantMovePiece(bool isWhite)
         {
-            string player = isWhite ? "WHITE" : "BLACK";
-            Console.Write(player + ": Select the piece to move (x,y): ");
+            string player = (isWhite ? "WHITE" : "BLACK") + " PLAYER";
+            Console.Write(player + ": And where do you want to place it? (x,y): ");
         }
 
         /* This method takes care to communicate with the user by printing a message on the screen. */
@@ -33,7 +33,7 @@ namespace Chess.Components
         public static void UserWins(bool isWhite)
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            string player = isWhite ? "WHITE" : "BLACK";
+            string player = (isWhite ? "WHITE" : "BLACK") + " PLAYER";
             Console.WriteLine("[CHECK MATE] " + player + " won the game!");
             Console.ResetColor();
         }
